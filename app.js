@@ -3,7 +3,7 @@ const PrinterTypes = require("node-thermal-printer").types;
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-const winston = require('winston');
+const winston = require("winston");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -18,13 +18,14 @@ app.use((err, req, res, next) => {
 // Logging configuration
 const logger = winston.createLogger({
   transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
+    new winston.transports.File({ filename: "error.log", level: "error" }),
     new winston.transports.Console({ format: winston.format.simple() }),
   ],
 });
 
 // sendFile will go here
 app.get("/", function (req, res) {
+  console.log("running html code...");
   res.sendFile(path.join(__dirname, "/index.html"));
 });
 
@@ -45,7 +46,7 @@ app.post("/print", async function (req, res) {
     res.send("working");
   } catch (error) {
     console.error("Socket timeout error:", error);
-    logger.error('Socket timeout error:', error);
+    logger.error("Socket timeout error:", error);
     res.status(500).send("Socket timeout error");
   }
 });
@@ -55,10 +56,10 @@ const server = app.listen(port, () => {
   console.log("Server started at http://localhost:" + port);
 });
 
-process.on('SIGINT', () => {
-  console.log('Received SIGINT. Closing server gracefully...');
+process.on("SIGINT", () => {
+  console.log("Received SIGINT. Closing server gracefully...");
   server.close(() => {
-    console.log('Server closed.');
+    console.log("Server closed.");
     process.exit(0);
   });
 });
